@@ -9,9 +9,10 @@ class AudioChunk(pyaudio.PyAudio):
 
     def __init__(self, rate, fps, channels, fr_format):
         super().__init__()
+        self.chunk = np.array([], bytes)
         self.rate = rate
         self.fps = fps
-        self.chunk = rate // fps // 2
+        self.chunk_size = self.rate // self.fps
         self.channels = channels
         self.fr_format = fr_format
         self.stream = None
@@ -32,22 +33,21 @@ class AudioChunk(pyaudio.PyAudio):
 
     def open_stream(self):
         self.stream = self.open(format=self.fr_format, channels=self.channels, rate=self.rate,
-                                input=True, frames_per_buffer=self.chunk, )
+                                input=True, frames_per_buffer=self.chunk_size, )
 
-    def get_raw(self):
-        raw_data = self.stream.read(self.chunk, exception_on_overflow=False)
-        return raw_data
+    def read_from_stream(self):
+        self.chunk = self.stream.read(self.chunk_size, exception_on_overflow=False)
 
-    def get_unpacked_raw(self):
-        int_data = np.frombuffer(self.get_raw(), np.int16).astype(np.float)
+    def unpack(self):
+        int_data = np.frombuffer(self.chunk, np.int16).astype(np.float)
         return int_data
 
     def get_rms_from_raw(self):
-        rms = audioop.rms(self.get_raw(), 2)
+        rms = audioop.rms(self.chunk, 2)
         return rms
 
     def get_rms_from_unpacked(self):
-        rms = np.sqrt(np.mean(self.get_unpacked_raw() ** 2))
+        rms = np.sqrt(np.mean(self.unpack() ** 2))
         return rms
 
     def design_butter_filter(self, lowcut=500, highcut=900, order=3):
