@@ -1,5 +1,5 @@
-# from source.presenter import Presenter
-from PyQt5 import QtWidgets
+from presenter import Presenter
+from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtWidgets import QApplication, QMainWindow
 
 import sys
@@ -8,6 +8,7 @@ import sys
 class View(QMainWindow):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.presenter = Presenter()
         self.setGeometry(200, 200, 300, 300)
         self.setWindowTitle("Qt Window example")
         self.initUI()
@@ -23,7 +24,8 @@ class View(QMainWindow):
         self.button.clicked.connect(self.clickSignal)
 
     def clickSignal(self):
-        pass
+        print("Clicked")
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
