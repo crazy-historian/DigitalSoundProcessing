@@ -45,6 +45,11 @@ class InitWindow(QMainWindow):
         self.radioButtonRate3.setGeometry(QtCore.QRect(80, 130, 51, 17))
         self.radioButtonRate3.setObjectName("radioButtonRate3")
 
+        self.groupOfRateRadioButtons = QtWidgets.QButtonGroup()
+        self.groupOfRateRadioButtons.addButton(self.radioButtonRate1)
+        self.groupOfRateRadioButtons.addButton(self.radioButtonRate2)
+        self.groupOfRateRadioButtons.addButton(self.radioButtonRate3)
+
         # chunk-size column
         self.chunkLabel = QtWidgets.QLabel(self)
         self.chunkLabel.setGeometry(QtCore.QRect(260, 20, 111, 41))
@@ -63,6 +68,11 @@ class InitWindow(QMainWindow):
         self.radioButtonChunk3.setGeometry(QtCore.QRect(290, 130, 51, 17))
         self.radioButtonChunk3.setObjectName("radioButtonChunk3")
 
+        self.groupOf_ChunkRadioButtons = QtWidgets.QButtonGroup()
+        self.groupOf_ChunkRadioButtons.addButton(self.radioButtonChunk1)
+        self.groupOf_ChunkRadioButtons.addButton(self.radioButtonChunk2)
+        self.groupOf_ChunkRadioButtons.addButton(self.radioButtonChunk3)
+
         # number-of-channels column
         self.channelLabel = QtWidgets.QLabel(self)
         self.channelLabel.setGeometry(QtCore.QRect(440, 20, 171, 41))
@@ -76,6 +86,10 @@ class InitWindow(QMainWindow):
         self.radioButtonChannel2 = QtWidgets.QRadioButton(self)
         self.radioButtonChannel2.setGeometry(QtCore.QRect(470, 110, 91, 17))
         self.radioButtonChannel2.setObjectName("radioButtonChannel2")
+
+        self.groupOf_ChannelRadioButtons = QtWidgets.QButtonGroup()
+        self.groupOf_ChannelRadioButtons.addButton(self.radioButtonChannel1)
+        self.groupOf_ChannelRadioButtons.addButton(self.radioButtonChannel2)
 
         # push-button columns
         self.pushButtonStartRecord = QtWidgets.QPushButton(self)
