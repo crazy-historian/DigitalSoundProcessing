@@ -16,7 +16,7 @@ class InitWindow(QMainWindow):
         super().__init__(*args, **kwargs)
 
     def setupUI(self):
-        #self.setGeometry(637, 366)
+        # self.setGeometry(637, 366)
         self.resize(637, 366)
         self.setWindowTitle("Init audio recording")
         self.setObjectName("InitWindow")
@@ -24,6 +24,7 @@ class InitWindow(QMainWindow):
         self.font.setPointSize(12)
         self.setupWidgets()
         self.relateUI()
+        self.setupButtonsData()
         self.show()
 
     def setupWidgets(self):
@@ -45,10 +46,10 @@ class InitWindow(QMainWindow):
         self.radioButtonRate3.setGeometry(QtCore.QRect(80, 130, 51, 17))
         self.radioButtonRate3.setObjectName("radioButtonRate3")
 
-        self.groupOfRateRadioButtons = QtWidgets.QButtonGroup()
-        self.groupOfRateRadioButtons.addButton(self.radioButtonRate1)
-        self.groupOfRateRadioButtons.addButton(self.radioButtonRate2)
-        self.groupOfRateRadioButtons.addButton(self.radioButtonRate3)
+        self.groupOf_RateRadioButtons = QtWidgets.QButtonGroup()
+        self.groupOf_RateRadioButtons.addButton(self.radioButtonRate1)
+        self.groupOf_RateRadioButtons.addButton(self.radioButtonRate2)
+        self.groupOf_RateRadioButtons.addButton(self.radioButtonRate3)
 
         # chunk-size column
         self.chunkLabel = QtWidgets.QLabel(self)
@@ -96,11 +97,25 @@ class InitWindow(QMainWindow):
         self.pushButtonStartRecord.setFont(self.font)
         self.pushButtonStartRecord.setGeometry(QtCore.QRect(80, 180, 471, 61))
         self.pushButtonStartRecord.setObjectName("pushButtonStartRecord")
+        self.pushButtonStartRecord.setObjectName("pushButtonStartRecord")
+        self.pushButtonStartRecord.clicked.connect(self.startRecord)
 
         self.pushButtonStopRecord = QtWidgets.QPushButton(self)
         self.pushButtonStopRecord.setFont(self.font)
         self.pushButtonStopRecord.setGeometry(QtCore.QRect(80, 250, 471, 61))
         self.pushButtonStopRecord.setObjectName("pushButtonStopRecord")
+
+    def setupButtonsData(self):
+        self.radioButtonsData = {
+            self.radioButtonRate1: 12000,
+            self.radioButtonRate2: 24000,
+            self.radioButtonRate3: 48000,
+            self.radioButtonChunk1: 256,
+            self.radioButtonChunk2: 512,
+            self.radioButtonChunk3: 1024,
+            self.radioButtonChannel1: 1,
+            self.radioButtonChannel2: 2
+        }
 
     def relateUI(self):
         self._translate = QtCore.QCoreApplication.translate
@@ -124,27 +139,23 @@ class InitWindow(QMainWindow):
         self.pushButtonStartRecord.setText(self._translate("MainWindow", "Начать запись"))
         self.pushButtonStopRecord.setText(self._translate("MainWindow", "Остановить запись"))
 
+    def startRecord(self, e):
+        record_config = {
+            "rate": self.radioButtonsData[self.groupOf_RateRadioButtons.checkedButton()],
+            "chunk": self.radioButtonsData[self.groupOf_ChunkRadioButtons.checkedButton()],
+            "channel": self.radioButtonsData[self.groupOf_ChannelRadioButtons.checkedButton()]
+        }
+        print(record_config)
+        """
+        There will be a sending special signal to Presenter
+        """
 
-    #
-    # def setupUi(self, MainWindow):
-    #     MainWindow.setObjectName("MainWindow")
-    #     MainWindow.resize(637, 366)
-    #     self.centralwidget = QtWidgets.QWidget(MainWindow)
-    #     self.centralwidget.setObjectName("centralwidget")
-    #
-    #
-    #
-    #     MainWindow.setCentralWidget(self.centralwidget)
-    #     self.menubar = QtWidgets.QMenuBar(MainWindow)
-    #     self.menubar.setGeometry(QtCore.QRect(0, 0, 637, 21))
-    #     self.menubar.setObjectName("menubar")
-    #     MainWindow.setMenuBar(self.menubar)
-    #     self.statusbar = QtWidgets.QStatusBar(MainWindow)
-    #     self.statusbar.setObjectName("statusbar")
-    #     MainWindow.setStatusBar(self.statusbar)
-    #
-    #     self.retranslateUi(MainWindow)
-    #     QtCore.QMetaObject.connectSlotsByName(MainWindow)
+    def storPerord(self, e):
+        """
+        Here will be a sending special signal to Presenter
+        """
+        return
+
 
 if __name__ == "__main__":
     import sys
