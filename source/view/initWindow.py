@@ -1,19 +1,12 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'initWindow.ui'
-#
-# Created by: PyQt5 UI code generator 5.13.2
-#
-# WARNING! All changes made in this file will be lost!
-from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QApplication, QMainWindow
-
 from PyQt5 import QtCore, QtGui, QtWidgets
+from presenter import Presenter
 
 
 class InitWindow(QMainWindow):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.presenter = Presenter(self)
 
     def setupUI(self):
         # self.setGeometry(637, 366)
@@ -149,12 +142,16 @@ class InitWindow(QMainWindow):
         """
         There will be a sending special signal to Presenter
         """
+        self.presenter.startRecord(record_config)
 
-    def storPerord(self, e):
+    def stopRecord(self, e):
         """
         Here will be a sending special signal to Presenter
         """
         return
+
+    def showModelData(self, data):
+        print(f"View: data from model is {data}")
 
 
 if __name__ == "__main__":
