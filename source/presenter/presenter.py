@@ -7,6 +7,13 @@ class Presenter:
         self.view = view
 
     def startRecord(self, record_dict):
-        print("Presenter has got the signal from GUI")
-        test_variable = self.audio_model.initStream(record_dict)
-        self.view.showModelData(test_variable)
+        self.audio_model.initStream(record_dict)
+        self.audioProcessing()
+
+    def audioProcessing(self, time=None, function=None):
+        self.audio_model.readStream()
+        rms = self.audio_model.getRMS()
+        self.view.showModelData(rms)
+
+    def stopRecord(self):
+        self.audio_model.closeStream()

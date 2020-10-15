@@ -8,7 +8,6 @@ class Audio(pyaudio.PyAudio):
         super().__init__()
         self.stream = None
         self.raw_data = None
-        self.data = 100
 
     def initStream(self, record_dict):
         self.stream = self.open(
@@ -20,11 +19,12 @@ class Audio(pyaudio.PyAudio):
         )
 
     def readStream(self):
-        self.chunk = self.stream.read()
+        self.chunk = self.stream.read(1024)
 
     def getRMS(self):
         rms = audioop.rms(self.chunk, 2)
         return rms
 
     def closeStream(self):
+        print("Stream was closed.")
         self.stream.close()

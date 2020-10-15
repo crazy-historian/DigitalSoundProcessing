@@ -97,6 +97,7 @@ class InitWindow(QMainWindow):
         self.pushButtonStopRecord.setFont(self.font)
         self.pushButtonStopRecord.setGeometry(QtCore.QRect(80, 250, 471, 61))
         self.pushButtonStopRecord.setObjectName("pushButtonStopRecord")
+        self.pushButtonStopRecord.clicked.connect(self.stopRecord)
 
     def setupButtonsData(self):
         self.radioButtonsData = {
@@ -139,16 +140,10 @@ class InitWindow(QMainWindow):
             "channel": self.radioButtonsData[self.groupOf_ChannelRadioButtons.checkedButton()]
         }
         print(record_config)
-        """
-        There will be a sending special signal to Presenter
-        """
         self.presenter.startRecord(record_config)
 
     def stopRecord(self, e):
-        """
-        Here will be a sending special signal to Presenter
-        """
-        return
+        self.presenter.stopRecord()
 
     def showModelData(self, data):
         print(f"View: data from model is {data}")
