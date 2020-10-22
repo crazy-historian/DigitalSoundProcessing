@@ -17,25 +17,31 @@ class Presenter:
         methods = {
             "RMS": self.model.getRMS
         }
-        self.audioRecording(methods=methods, time_in_sec=time_in_sec)
+        self.view.openNewThread(self.audioRecording, methods=methods, time_in_sec=time_in_sec)
 
-    def audioRecording(self, methods, time_in_sec=None):
+        # self.audioRecording(methods, time_in_sec)
+
+    def audioRecording(self, methods, time_in_sec):
         if time_in_sec is None:
             iterations = float('inf')
         else:
             iterations = self.model.getIterations(time_in_sec)
+            print(iterations)
         iteration_num = 0
 
         while self.recording and iteration_num < iterations:
-            iterations += 1
+            iteration_num += 1
             outputs = {}
             self.model.readStream()
             for name in methods:
                 outputs[name] = methods[name]()
             self.view.showModelData(outputs)
-            self.view.newProcess()
+        else:
+            self.stopRecord()
+            self.model.closeStream()
 
     def stopRecord(self):
-        self.model.closeStream()
         self.recording = False
+
+
 

@@ -36,7 +36,7 @@ class Audio(pyaudio.PyAudio):
         return rms
 
     def getIterations(self, seconds):
-        return int(self.rate / (self.chunk_size * seconds))
+        return int((self.rate / self.chunk_size) * seconds)
 
     def closeStream(self):
         if self.stream is not None:

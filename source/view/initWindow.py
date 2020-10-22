@@ -1,11 +1,34 @@
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QThreadPool, QRunnable
 from presenter import Presenter
+
+import sys, traceback
+
+
+class ThreadSignals(QObject):
+    finished = pyqtSignal()
+    error = pyqtSignal(tuple)
+    result = pyqtSignal(object)
+    progress = pyqtSignal(int)
+
+
+class Thread(QRunnable):
+    def __init__(self, method, **method_kwargs):
+        super(Thread, self).__init__()
+        self.method = method
+        self.signals = ThreadSignals
+        self.method_kwargs = method_kwargs
+
+    # @pyqtSlot
+    def run(self):
+        self.method(**self.method_kwargs)
 
 
 class InitWindow(QMainWindow):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.thread_pool = QThreadPool()
         self.presenter = Presenter(self)
 
     def setupUI(self):
@@ -139,11 +162,15 @@ class InitWindow(QMainWindow):
             "chunk": self.radioButtonsData[self.groupOf_ChunkRadioButtons.checkedButton()],
             "channel": self.radioButtonsData[self.groupOf_ChannelRadioButtons.checkedButton()]
         }
-        print(audio_configuring)
+        # self.openNewThread(self.presenter.startRecord, audio_configuring=audio_configuring)
         self.presenter.startRecord(audio_configuring)
 
     def stopRecord(self, e):
         self.presenter.stopRecord()
+
+    def openNewThread(self, method_name, **method_kwargs):
+        thread = Thread(method_name, **method_kwargs)
+        self.thread_pool.start(thread)
 
     @staticmethod
     def showModelData(data):
