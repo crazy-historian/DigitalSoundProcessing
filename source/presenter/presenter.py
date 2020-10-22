@@ -12,9 +12,14 @@ class Presenter:
         self.model.configureAudio(audio_configuring)
         self.model.initStream()
         self.recording = True
-        self.audioRecording(time_in_sec=time_in_sec)
+        # there will be a complex procedure of methods_dict initialising,
+        # which will depends on View Interface
+        methods = {
+            "RMS": self.model.getRMS
+        }
+        self.audioRecording(methods=methods, time_in_sec=time_in_sec)
 
-    def audioRecording(self, time_in_sec=None):
+    def audioRecording(self, methods, time_in_sec=None):
         if time_in_sec is None:
             iterations = float('inf')
         else:
@@ -23,9 +28,11 @@ class Presenter:
 
         while self.recording and iteration_num < iterations:
             iterations += 1
+            outputs = {}
             self.model.readStream()
-            rms = self.model.getRMS()
-            self.view.showModelData(rms)
+            for name in methods:
+                outputs[name] = methods[name]()
+            self.view.showModelData(outputs)
             self.view.newProcess()
 
     def stopRecord(self):
