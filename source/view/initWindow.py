@@ -134,19 +134,24 @@ class InitWindow(QMainWindow):
         self.pushButtonStopRecord.setText(self._translate("MainWindow", "Остановить запись"))
 
     def startRecord(self, e):
-        record_config = {
+        audio_configuring = {
             "rate": self.radioButtonsData[self.groupOf_RateRadioButtons.checkedButton()],
             "chunk": self.radioButtonsData[self.groupOf_ChunkRadioButtons.checkedButton()],
             "channel": self.radioButtonsData[self.groupOf_ChannelRadioButtons.checkedButton()]
         }
-        print(record_config)
-        self.presenter.startRecord(record_config)
+        print(audio_configuring)
+        self.presenter.startRecord(audio_configuring)
 
     def stopRecord(self, e):
         self.presenter.stopRecord()
 
-    def showModelData(self, data):
+    @staticmethod
+    def showModelData(data):
         print(f"View: data from model is {data}")
+
+    @staticmethod
+    def newProcess():
+        QApplication.processEvents()
 
 
 if __name__ == "__main__":
