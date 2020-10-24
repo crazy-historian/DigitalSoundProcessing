@@ -3,6 +3,7 @@ import numpy as np
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
+
 class Spectrogram(tk.Tk):
     def __init__(self, fps, audio):
         super().__init__()
