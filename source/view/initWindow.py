@@ -3,21 +3,11 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QThreadPool, QRunnable
 from presenter import Presenter
 
-import sys, traceback
-
-
-class ThreadSignals(QObject):
-    finished = pyqtSignal()
-    error = pyqtSignal(tuple)
-    result = pyqtSignal(object)
-    progress = pyqtSignal(int)
-
 
 class Thread(QRunnable):
     def __init__(self, method, **method_kwargs):
         super(Thread, self).__init__()
         self.method = method
-        self.signals = ThreadSignals
         self.method_kwargs = method_kwargs
 
     # @pyqtSlot
