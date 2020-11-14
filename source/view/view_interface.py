@@ -15,16 +15,21 @@ class IView(abc.ABC):
         """
         ...
 
-    def get_output_from_model(self) -> None:
+    def receive_output_from_model(self, *args, **kwargs) -> None:
         """
             Receiving and processing returned from model outputs of DSP methods
         """
+        ...
 
     def execute_in_thread(self, function, **func_args) -> None:
         """
             Passed function works in new thread
 
-        :param function: It is executed in new process
-        :param func_args: This dictionary of named arguments is passed into function
-        :return:
         """
+        ...
+
+    def execute_in_process(self, function, **func_args) -> None:
+        """
+            Passed function works in new process
+        """
+        ...
