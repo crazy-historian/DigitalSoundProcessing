@@ -13,12 +13,12 @@ class Audio(pyaudio.PyAudio):
         self.chunk_size = None
         self.channels = None
 
-    def configureAudio(self, audio_configuring):
+    def configure_audio(self, audio_configuring):
         self.rate = audio_configuring["rate"]
         self.chunk_size = audio_configuring["chunk"]
         self.channels = audio_configuring["channel"]
 
-    def initStream(self):
+    def init_stream(self):
         self.stream = self.open(
             format=pyaudio.paInt16,
             input=True,
@@ -27,18 +27,18 @@ class Audio(pyaudio.PyAudio):
             frames_per_buffer=self.chunk_size
         )
 
-    def readStream(self):
+    def read_stream(self):
         if self.stream:
             self.chunk = self.stream.read(self.chunk_size)
 
-    def getRMS(self):
+    def get_rms(self):
         rms = audioop.rms(self.chunk, 2)
         return rms
 
-    def getIterations(self, seconds):
+    def get_iterations(self, seconds):
         return int((self.rate / self.chunk_size) * seconds)
 
-    def closeStream(self):
+    def close_stream(self):
         if self.stream is not None:
             self.stream.close()
             self.stream = None

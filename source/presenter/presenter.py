@@ -8,39 +8,37 @@ class Presenter:
         self.recording = False
         self.view = view
 
-    def startRecord(self, audio_configuring, time_in_sec=None):
-        self.model.configureAudio(audio_configuring)
-        self.model.initStream()
+    def start_recording(self, audio_configuring, time_in_sec=None):
+        self.model.configure_audio(audio_configuring)
+        self.model.init_stream()
         self.recording = True
         # there will be a complex procedure of methods_dict initialising,
         # which will depends on View Interface
         methods = {
-            "RMS": self.model.getRMS
+            "RMS": self.model.get_rms
         }
-        self.view.openNewThread(self.audioRecording, methods=methods, time_in_sec=time_in_sec)
+        self.view.execute_in_thread(self.audio_recording, methods=methods, time_in_sec=time_in_sec)
 
-        # self.audioRecording(methods, time_in_sec)
-
-    def audioRecording(self, methods, time_in_sec):
+    def audio_recording(self, methods, time_in_sec):
         if time_in_sec is None:
             iterations = float('inf')
         else:
-            iterations = self.model.getIterations(time_in_sec)
+            iterations = self.model.get_iterations(time_in_sec)
             print(iterations)
         iteration_num = 0
 
         while self.recording and iteration_num < iterations:
             iteration_num += 1
             outputs = {}
-            self.model.readStream()
+            self.model.read_stream()
             for name in methods:
                 outputs[name] = methods[name]()
-            self.view.showModelData(outputs)
+            self.view.receive_output_from_model(outputs)
         else:
-            self.stopRecord()
-            self.model.closeStream()
+            self.stop_recording()
+            self.model.close_stream()
 
-    def stopRecord(self):
+    def stop_recording(self):
         self.recording = False
 
 
